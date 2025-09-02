@@ -28,7 +28,7 @@ with open('input.txt','r') as file:
         nodeIn = line[open+1:close].strip()
 
         if equal > 1:
-            nType = line[equal+1:open]
+            nType = line[equal+1:open].strip()
             # node is a logic gate
             print(f'{nodeOut} is an {nType} Gate')
         else:
