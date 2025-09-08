@@ -1,6 +1,8 @@
 
-
 # read input file
+
+#TODO: create applet to choose input file
+
 with open('hw1.txt','r') as file:
     program = file.read()
     lines = program.split('\n')
@@ -12,7 +14,8 @@ with open('hw1.txt','r') as file:
     inputs = []
     outputs = []
     gates = []
-    circ = [] #HW02 array of tuples (nodeOut,nType,{list of inputs})
+    #HW02 data structure encoding a circuit representation
+    circ = [] #array of tuples (nodeOut,nType,{list of inputs})
 
     for line in lines:
 
@@ -44,22 +47,25 @@ with open('hw1.txt','r') as file:
             gates.append(gate)
 
             #HW02 circuit representation
-            elem = (nodeOut,nType,nodeIn.split(','))
+            # Python silliness to strip inputs for circ[]
+            temp = [t.strip() for t in nodeIn.split(',')]
+            elem = (nodeOut,nType,temp)
             circ.append(elem)
-
 
         else:
             nType = line[0:open].strip()
             if nType == 'INPUT':
                 #node is an input
                 inputs.append(line[open+1:close].strip())
-                elem = (nodeIn,'INPUT','u')
+                #HW02 circuit representation
+                elem = (nodeIn.strip(),'INPUT','')
                 circ.append(elem)
 
             if nType == 'OUTPUT':
                 #node is an output
                 outputs.append(line[open+1:close].strip())
-                elem = ('u','OUTPUT',nodeIn)
+                #HW02 circuit representation
+                elem = ('','OUTPUT',nodeIn.strip())
                 circ.append(elem)
 
     # Print All Inputs
@@ -100,27 +106,42 @@ with open('hw1.txt','r') as file:
 ####################
 # HW02
 
-# create memoization table
+# create memoization structure (dictionary)
 leveldict = {}
-# initialize dictionary inputs
+# initialize dictionary with lowest level elements (inputs)
 for input in inputs:
     leveldict[input] = 0
 
+#function getlevel
+#   takes as input Node elem, typically a representation of a circuit element
+#   returns as output an integer representation of the circuit level of elem
+#   reads and writes to global memoization dictionary leveldict
+#   fails for sequential circuits
 def getlevel(elem):
-    
+
     # base case: elem has already been assigned level
     if elem in leveldict:
         return leveldict[elem]
-    
-    # recursively fill leveldict
-    elemInputs = circ
-    for input in :
+
+    # find inputs associated with elem
+    elemInputs = []
+    for c in circ:
+        if c[0] == elem:
+            elemInputs = c[2]
+            break
+
+    # recursively fill leveldict until level of desired element found
+    leveldict[elem] = 0
+    for input in elemInputs:
         leveldict[elem] = max(leveldict[elem],getlevel(input)+1)
+
     return leveldict[elem]
 
-#start recursive filling of library
+#kickstart getlevel for every highest level element (outputs)
 maxlevel = 0
 for output in outputs:
     maxlevel = max(maxlevel,getlevel(output))
 
+#print(circ)
 print(leveldict)
+print(maxlevel)
