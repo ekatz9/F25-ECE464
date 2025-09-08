@@ -1,7 +1,7 @@
 
 
 # read input file
-with open('input.txt','r') as file:
+with open('hw1.txt','r') as file:
     program = file.read()
     lines = program.split('\n')
     # test that program is reading file correctly
@@ -12,6 +12,7 @@ with open('input.txt','r') as file:
     inputs = []
     outputs = []
     gates = []
+    circ = [] #HW02 array of tuples (nodeOut,nType,{list of inputs})
 
     for line in lines:
 
@@ -23,14 +24,15 @@ with open('input.txt','r') as file:
         open = line.find('(')
         close = line.find(')')
 
+        # Find appropriate Substrings
+        nodeOut = line[0:equal].strip()
+        nodeIn = line[open+1:close].strip()
+
         # input/output declarations do not include '='
         # find() returns -1 if character not found
         if equal > 0:
             nType = line[equal+1:open].strip()
             # node is a logic gate
-            # Find appropriate Substrings
-            nodeOut = line[0:equal].strip()
-            nodeIn = line[open+1:close].strip()
             # Find how many inputs
             inputCount = 0
             for i in nodeIn:
@@ -41,16 +43,24 @@ with open('input.txt','r') as file:
             gate = nodeOut + ' ' + str(inputCount) + ' ' + nType + ' ' + nodeIn
             gates.append(gate)
 
+            #HW02 circuit representation
+            elem = (nodeOut,nType,nodeIn.split(','))
+            circ.append(elem)
+
 
         else:
             nType = line[0:open].strip()
             if nType == 'INPUT':
                 #node is an input
                 inputs.append(line[open+1:close].strip())
+                elem = (nodeIn,'INPUT','u')
+                circ.append(elem)
 
             if nType == 'OUTPUT':
                 #node is an output
                 outputs.append(line[open+1:close].strip())
+                elem = ('u','OUTPUT',nodeIn)
+                circ.append(elem)
 
     # Print All Inputs
     print("\n           ==INPUT==")
@@ -86,3 +96,31 @@ with open('input.txt','r') as file:
         print(f'||{data[0]}||{data[1]}||{data[2]}||{data[3]}||')
     
     print("================================\n")
+
+####################
+# HW02
+
+# create memoization table
+leveldict = {}
+# initialize dictionary inputs
+for input in inputs:
+    leveldict[input] = 0
+
+def getlevel(elem):
+    
+    # base case: elem has already been assigned level
+    if elem in leveldict:
+        return leveldict[elem]
+    
+    # recursively fill leveldict
+    elemInputs = circ
+    for input in :
+        leveldict[elem] = max(leveldict[elem],getlevel(input)+1)
+    return leveldict[elem]
+
+#start recursive filling of library
+maxlevel = 0
+for output in outputs:
+    maxlevel = max(maxlevel,getlevel(output))
+
+print(leveldict)
