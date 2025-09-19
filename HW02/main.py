@@ -3,7 +3,7 @@
 
 #TODO: create applet to choose input file
 
-with open('hw1.txt','r') as file:
+with open('lecture.txt','r') as file:
     program = file.read()
     lines = program.split('\n')
     # test that program is reading file correctly
@@ -108,6 +108,7 @@ with open('hw1.txt','r') as file:
 
 # create memoization structure (dictionary)
 leveldict = {}
+
 # initialize dictionary with lowest level elements (inputs)
 for input in inputs:
     leveldict[input] = 0
