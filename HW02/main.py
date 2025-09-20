@@ -3,7 +3,7 @@
 
 #TODO: create applet to choose input file
 
-with open('lecture.txt','r') as file:
+with open('c17.txt','r') as file:
     program = file.read()
     lines = program.split('\n')
     # test that program is reading file correctly
@@ -143,6 +143,11 @@ maxlevel = 0
 for output in outputs:
     maxlevel = max(maxlevel,getlevel(output))
 
-#print(circ)
-print(leveldict)
-print(maxlevel)
+print("      ======LEVELS======")
+print("      ==LETTER==LEVELS==")
+for i in leveldict:
+    letter = str(i).center(6)
+    level = str(leveldict[i]).center(6)
+    print(f'      ||{letter}||{level}||')
+
+print("      ==================\n")
