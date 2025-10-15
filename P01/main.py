@@ -1,6 +1,6 @@
 import os
 
-#class loc defines a loaction in the circuit
+#class loc defines a location in the circuit
 class loc:
     def __init__(self,output,type,input):
         self.output = output
@@ -9,6 +9,15 @@ class loc:
     
     def __str__(self):
         return self.output
+
+#class fault defines a possible circuit fault
+class fault:
+    def __init__(self, label, type):
+        self.label = label
+        self.type = type
+    
+    def __str__(self):
+        return self.label
 
 # Choose input files
 fileList = []
@@ -25,7 +34,9 @@ for i in range(0,len(fileList)):
     print(f'   ({i}) {fileList[i]}')
 
 fileInd = int(input('\nfile #: '))
-print(f'Opening {fileList[fileInd]}')
+while fileInd >= len(fileList) or fileInd < 0:
+    fileInd = int(input('   invalid file index, try again: '))
+print(f'   Opening {fileList[fileInd]}')
 
 #Circuit Representation
 inputs = []
@@ -77,11 +88,16 @@ with open(fileList[fileInd],'r') as file:
                 circ.append(elem)
 
 #Debug: print circuit representation
-circ = sorted(circ, key=lambda elem:elem.output)
-print(f'\n{'label':^10}|{'type':^10}|{'inputs':^15}')
-print(f'{'':-<37}')
+circ = sorted(circ, key=lambda elem:elem.gate)
+print(f'\n{'label':=^10}||{'type':=^10}||{'inputs':=^15}')
 for elem in circ:
     instring = ''
     for input in elem.input:
         instring += input + ', '
-    print(f'{elem.output:^10}|{elem.gate:^10}|{instring[0:-2]:^15}')
+    print(f'{elem.output:^10}||{elem.gate:^10}||{instring[0:-2]:^15}')
+
+# 1) Fault Listing
+
+# 2) Circuit Simulation
+
+# 3) Fault Simulation
