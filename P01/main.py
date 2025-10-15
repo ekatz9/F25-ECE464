@@ -92,11 +92,27 @@ circ = sorted(circ, key=lambda elem:elem.gate)
 print(f'\n{'label':=^10}||{'type':=^10}||{'inputs':=^15}')
 for elem in circ:
     instring = ''
-    for input in elem.input:
-        instring += input + ', '
+    for eleminput in elem.input:
+        instring += eleminput + ', '
     print(f'{elem.output:^10}||{elem.gate:^10}||{instring[0:-2]:^15}')
 
-# 1) Fault Listing
+#################
+#1) Fault Listing
+
+SA0list = {}
+SA1list = {}
+for elem in circ:
+    SA0list[elem.output]    = fault(elem.output,'SA0')
+    SA1list[elem.output]     = fault(elem.output,'SA1')
+
+lflag = input('\n View full fault list? (y/n): ')
+if lflag.upper() == 'Y':
+    print(f'{'label':=^10}||{'type':=^27}')
+    for fault in SA0list:
+        print(f'{fault.label:^10}||{fault.type:^10}')
+    for fault in SA1list:
+        print(f'{fault.label:^10}||{fault.type:^10}')
+    
 
 # 2) Circuit Simulation
 
