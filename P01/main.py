@@ -149,9 +149,10 @@ while(len(tvector) != len(cInputs)):
     tvector = input('      invalid test vector, try again: ')
 
 # assign values for inputs
-for i in range(len(inputs)+1):
-    # print(f'assigning {circuit[cInputs[i]].name} value {tvector[i]}')
+for i in range(len(cInputs)):
+    print(f'assigning {circuit[cInputs[i]].name} value {tvector[i]}')
     circuit[cInputs[i]].value = tvector[i]
+print('')
 
 #function getvalue
 #   take as input Node elem
