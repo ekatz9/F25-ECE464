@@ -17,7 +17,8 @@ for file in os.listdir(os.getcwd()):
         fileList.append(file)
 
 print('\nF25 ECE 464 Project 01 \nCircuit & Faults')
-print('\nMazin Al-Attrash & Eli Katz\n')
+print('\nMazin Al-Attrash & Eli Katz')
+print(f'{'':-<37}\n')
 
 print('Choose Input File:')
 for i in range(0,len(fileList)):
@@ -38,7 +39,7 @@ with open(fileList[fileInd],'r') as file:
 
     #Populate Circ
     for line in lines:
-
+        
         # consider each input line conforms to the format
         # 'nodeOut' = 'nType'('nodeIn')
 
@@ -72,16 +73,15 @@ with open(fileList[fileInd],'r') as file:
                 #node is an output
                 outputs.append(line[open+1:close].strip())
                 #HW02 circuit representation
-                elem = (loc(nodeIn.strip(),'OUTPUT',nodeIn.strip()))
+                elem = (loc(nodeIn.strip(),'OUTPUT',''))
                 circ.append(elem)
 
-#test circuit representation
+#Debug: print circuit representation
+circ = sorted(circ, key=lambda elem:elem.output)
 print(f'\n{'label':^10}|{'type':^10}|{'inputs':^15}')
 print(f'{'':-<37}')
-for input in inputs:
-    print(f'\n{input:^10}|{'INPUT':^10}|{'':^15}')
 for elem in circ:
-    if (elem.gate != 'INPUT' or elem.gate != 'OUTPUT'):
-        print(f'\n{elem.output:^10}|{elem.gate:^10}|{elem.input:^15}')
-for output in outputs:
-    print(f'\n{output:^10}|{'OUTPUT':^10}|{output:^15}')
+    instring = ''
+    for input in elem.input:
+        instring += input + ', '
+    print(f'{elem.output:^10}|{elem.gate:^10}|{instring[0:-2]:^15}')
