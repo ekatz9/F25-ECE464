@@ -176,6 +176,7 @@ def getvalue(elem):
             elem.value = '0'
         else:
             elem.value = 'x'
+        print(f'   {elem} = !{currVal} = {elem.value}')
         return elem.value
     
     # get values of elem inputs
