@@ -35,7 +35,8 @@ for i in range(0,len(fileList)):
 fileInd = int(input('\nfile #: '))
 while fileInd >= len(fileList) or fileInd < 0:
     fileInd = int(input('   invalid file index, try again: '))
-    if fileInd == 'q':
+    if fileInd == -1:
+        print('   Program quit')
         os._exit(0)
 print(f'   Opening {fileList[fileInd]}')
 
@@ -115,10 +116,16 @@ for listing in printList:
 #################
 #1) Fault Listing
 
-# Fault List Data Structures
-SA0list = {}
-SA1list = {}
 #TODO: populate full fault list
+faultcounter = 1
+printList = sorted(circuit.items(), key = lambda item: item[1].id)
+for faultType in {'SA0', 'SA1'}:
+    for listing in printList:
+        print(f'fault {faultcounter:<3}: {listing[1].name}@{listing[1].id}-{faultType}')
+        faultcounter += 1
+        for ninput in listing[1].nodesIn:
+            print(f'fault {faultcounter:<3}: {ninput}@{listing[1].id}-{faultType}')
+            faultcounter += 1
 
 ######################
 #2) Circuit Simulation
@@ -146,11 +153,15 @@ print('\n2) Circuit Simulation')
 print(f'   input test vector for inputs {temp}')
 tvector = input('\n   test vector: ')
 while(len(tvector) != len(cInputs)):
+    if(tvector == '-1'):
+        print('   program quit')
+        os._exit(0)
     tvector = input('      invalid test vector, try again: ')
+    
 
 # assign values for inputs
 for i in range(len(cInputs)):
-    print(f'assigning {circuit[cInputs[i]].name} value {tvector[i]}')
+    # print(f'assigning {circuit[cInputs[i]].name} value {tvector[i]}')
     circuit[cInputs[i]].value = tvector[i]
 print('')
 
@@ -160,11 +171,11 @@ print('')
 #   reads and writes to circuit
 def getvalue(elem):
 
-    print(f'getting value for {elem.name}')
+    # print(f'getting value for {elem.name}')
 
     # base case: elem already has a value
     if elem.value != '':
-        print(f'   {elem.name} has value {elem.value}')
+        # print(f'   {elem.name} has value {elem.value}')
         return elem.value
     
     # base case: elem has 1 input (NOT Gate)
@@ -176,23 +187,23 @@ def getvalue(elem):
             elem.value = '0'
         else:
             elem.value = 'x'
-        print(f'   {elem} = !{currVal} = {elem.value}')
+        # print(f'   {elem} = !{currVal} = {elem.value}')
         return elem.value
     
     # get values of elem inputs
     inputVals = []
-    print(f'   inputs = {elem.nodesIn}')
+    # print(f'   inputs = {elem.nodesIn}')
     for elemInput in elem.nodesIn:
         inputVals.append(getvalue(circuit[elemInput]))
-    print(f'   inputVals = {inputVals}')
+    # print(f'   inputVals = {inputVals}')
 
     # use ulogic lookup table
     currVal = inputVals[0]
-    print(f'   currVal = {currVal}')
+    # print(f'   currVal = {currVal}')
     for i in range(1,len(inputVals)):
         #format for lookup table
         vals = sorted({currVal,inputVals[i]})
-        print(f'   vals = {vals}')
+        # print(f'   vals = {vals}')
         valstring = "".join(vals)
         match valstring:
             case '0':
@@ -208,16 +219,18 @@ def getvalue(elem):
             case 'x':
                 currVal = ulogictable[elem.gate][5]
     elem.value = currVal
-    print(f'      {elem.name} = {elem.gate}({elem.nodesIn}) = {elem.gate}({inputVals}) = {elem.value}')
+    # print(f'      {elem.name} = {elem.gate}({elem.nodesIn}) = {elem.gate}({inputVals}) = {elem.value}')
     return elem.value
 
 #kickstart getvalue
 for cOutput in cOutputs:
     getvalue(circuit[cOutput])
     
+# Print Circuit Analysis
+for coutput in cOutputs:
+    print(f'output {coutput} = {circuit[coutput].value}')
 
-#Debug - Print circuit values
-for elem in circuit.items():
-    print(f'{elem[1].name} = {elem[1].value}')
-    
-
+printList = sorted(circuit.items(), key = lambda item: item[1].name)
+print(f'\n||{' id ':=^8}||{' name ':=^10}||{' value ':=^9}||')
+for listing in printList:
+    print(f'||{listing[1].id:^8}||{listing[1].name:^10}||{listing[1].value:^9}||')
