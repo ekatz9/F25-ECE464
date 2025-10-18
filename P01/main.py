@@ -116,16 +116,26 @@ for listing in printList:
 #################
 #1) Fault Listing
 
+print('\n1) Full Fault List')
+input('   press enter to continue')
 #TODO: populate full fault list
-faultcounter = 1
-printList = sorted(circuit.items(), key = lambda item: item[1].id)
-for faultType in {'SA0', 'SA1'}:
-    for listing in printList:
-        print(f'fault {faultcounter:<3}: {listing[1].name}@{listing[1].id}-{faultType}')
-        faultcounter += 1
+faultcounter = 0
+printList = sorted(circuit.items(), key = lambda item: item[1].name)
+print(f'\n||{' count ':=^10}||{' location ':=^10}||{' fault ':=^10}')
+for listing in printList:
+    faults = f'{listing[1].name}-SA0, {listing[1].name}-SA1'
+    faultcounter += 2
+    carriage = 3
+    for faultType in {'SA0', 'SA1'}:
         for ninput in listing[1].nodesIn:
-            print(f'fault {faultcounter:<3}: {ninput}@{listing[1].id}-{faultType}')
+            if carriage % 7 == 0:
+                faults += f'\n||{faultcounter:^10}||{'':^10}||'
+                carriage = 1
+            faults += f', {listing[1].name}-{ninput}-{faultType}'
             faultcounter += 1
+            carriage += 1
+    print(f'||{faultcounter:^10}||{listing[1].name:^10}||{faults}')
+print(f'{faultcounter} faults total')
 
 ######################
 #2) Circuit Simulation
