@@ -1,78 +1,17 @@
-TV detects fault a-('a',)-SA0
-TV detects fault a-('a',)-SA1
-TV detects fault a'-("a'",)-SA0
-TV detects fault a'-("a'",)-SA1
-TV detects fault a'-('a',)-SA1
-TV detects fault a'-('a',)-SA0
-TV detects fault b-('b',)-SA0
-TV detects fault b-('b',)-SA1
-TV detects fault b'-("b'",)-SA0
-TV detects fault b'-("b'",)-SA1
-TV detects fault b'-('b',)-SA1
-TV detects fault b'-('b',)-SA0
-TV detects fault c-('c',)-SA0
-TV detects fault c-('c',)-SA1
-TV detects fault c'-("c'",)-SA0
-TV detects fault c'-("c'",)-SA1
-TV detects fault c'-('c',)-SA1
-TV detects fault c'-('c',)-SA0
-TV detects fault d-('d',)-SA0
-TV detects fault d-('d',)-SA1
-TV detects fault d-('a',)-SA1
-TV detects fault d-("b'",)-SA1
-TV detects fault d-('a',)-SA0
-TV detects fault d-("b'",)-SA0
-TV detects fault e-('e',)-SA0
-TV detects fault e-('e',)-SA1
-TV detects fault e-("a'",)-SA1
-TV detects fault e-('b',)-SA1
-TV detects fault e-('c',)-SA1
-TV detects fault e-("a'",)-SA0
-TV detects fault e-('b',)-SA0
-TV detects fault e-('c',)-SA0
-TV detects fault f-('f',)-SA0
-TV detects fault f-('f',)-SA1
-TV detects fault f-('a',)-SA1
-TV detects fault f-('b',)-SA1
-TV detects fault f-("c'",)-SA1
-TV detects fault f-('a',)-SA0
-TV detects fault f-('b',)-SA0
-TV detects fault f-("c'",)-SA0
-TV detects fault g-('g',)-SA0
-TV detects fault g-('g',)-SA1
-TV detects fault g-("b'",)-SA1
-TV detects fault g-('c',)-SA1
-TV detects fault g-("b'",)-SA0
-TV detects fault g-('c',)-SA0
-TV detects fault h-('h',)-SA0
-TV detects fault h-('h',)-SA1
-TV detects fault h-('b',)-SA1
-TV detects fault h-("c'",)-SA1
-TV detects fault h-('b',)-SA0
-TV detects fault h-("c'",)-SA0
-TV detects fault w-('w',)-SA0
-TV detects fault w-('w',)-SA1
-TV detects fault w-('a',)-SA1
-TV detects fault w-('b',)-SA1
-TV detects fault w-('c',)-SA1
-TV detects fault w-('a',)-SA0
-TV detects fault w-('b',)-SA0
-TV detects fault w-('c',)-SA0
-TV detects fault x-('x',)-SA0
-TV detects fault x-('x',)-SA1
-TV detects fault x-('d',)-SA1
-TV detects fault x-('e',)-SA1
-TV detects fault x-('f',)-SA1
-TV detects fault x-('d',)-SA0
-TV detects fault x-('e',)-SA0
-TV detects fault x-('f',)-SA0
-TV detects fault y-('y',)-SA0
-TV detects fault y-('y',)-SA1
-TV detects fault y-('g',)-SA1
-TV detects fault y-('h',)-SA1
-TV detects fault y-('g',)-SA0
-TV detects fault y-('h',)-SA0
-TV detects fault z-('z',)-SA0
-TV detects fault z-('z',)-SA1
-TV detects fault z-('c',)-SA1
-TV detects fault z-('c',)-SA0
+
+||== id ==||== name ==||= value =||
+||   0    ||    a     ||    0    ||
+||   10   ||    a'    ||    1    ||
+||   1    ||    b     ||    1    ||
+||   11   ||    b'    ||    0    ||
+||   5    ||    c     ||    1    ||
+||   2    ||    c'    ||    0    ||
+||   9    ||    d     ||    0    ||
+||   4    ||    e     ||    1    ||
+||   12   ||    f     ||    0    ||
+||   13   ||    g     ||    0    ||
+||   14   ||    h     ||    0    ||
+||   3    ||    w     ||    0    ||
+||   6    ||    x     ||    1    ||
+||   7    ||    y     ||    0    ||
+||   8    ||    z     ||    0    ||

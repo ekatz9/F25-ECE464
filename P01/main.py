@@ -26,7 +26,7 @@ class node:
 class fault:
     def __init__(self, id, name, type,):
         self.id = id
-        self.name = name,
+        self.name = name
         self.type = type
         self.detected = False
 
@@ -125,33 +125,46 @@ for listing in printList:
 #1) Fault Listing
 
 faultlist = []
-print('\n1) Full Fault List')
-input('   press enter to continue')
-#TODO: populate full fault list
-faultcounter = 0
-printList = sorted(circuit.items(), key = lambda item: item[1].name)
-print(f'\n||{' count ':=^10}||{' location ':=^10}||{' fault ':=^10}')
-for listing in printList:
-    faults = f'{listing[1].name}-SA0, {listing[1].name}-SA1'
-    
-    faultlist.append(fault(listing[1].name,listing[1].name,'SA0'))
-    faultlist.append(fault(listing[1].name,listing[1].name,'SA1'))
+fullOrNot = ''
+faultToTest = ''
+testFault = []
+print('')
+while fullOrNot != 'Y' and fullOrNot != 'N':
+    fullOrNot = input('Full Fault Sim (Y/N): ')
+    if fullOrNot != 'Y' and fullOrNot != 'N':
+        print("\nPlease enter a valid response of Y or N")
+if fullOrNot == 'Y':
+    print('\n1) Full Fault List')
+    #TODO: populate full fault list
+    faultcounter = 0
+    printList = sorted(circuit.items(), key = lambda item: item[1].name)
+    print(f'\n||{' count ':=^10}||{' location ':=^10}||{' fault ':=^10}')
+    for listing in printList:
+        faults = f'{listing[1].name}-SA0, {listing[1].name}-SA1'
+        
+        faultlist.append(fault(listing[1].name,listing[1].name,'SA0'))
+        faultlist.append(fault(listing[1].name,listing[1].name,'SA1'))
 
-    faultcounter += 2
-    carriage = 3
-    for faultType in {'SA0', 'SA1'}:
-        for ninput in listing[1].nodesIn:
-            if carriage % 7 == 0:
-                faults += f'\n||{faultcounter:^10}||{'':^10}||'
-                carriage = 1
-            faults += f', {listing[1].name}-{ninput}-{faultType}'
-            #print(f'{listing[1].name} has input {ninput}')
-            faultlist.append(fault(listing[1].name,ninput,faultType))
+        faultcounter += 2
+        carriage = 3
+        for faultType in {'SA0', 'SA1'}:
+            for ninput in listing[1].nodesIn:
+                if carriage % 7 == 0:
+                    faults += f'\n||{faultcounter:^10}||{'':^10}||'
+                    carriage = 1
+                faults += f', {listing[1].name}-{ninput}-{faultType}'
+                #print(f'{listing[1].name} has input {ninput}')
+                faultlist.append(fault(listing[1].name,ninput,faultType))
 
-            faultcounter += 1
-            carriage += 1
-    print(f'||{faultcounter:^10}||{listing[1].name:^10}||{faults}')
-print(f'{faultcounter} faults total')
+                faultcounter += 1
+                carriage += 1
+        print(f'||{faultcounter:^10}||{listing[1].name:^10}||{faults}')
+    print(f'{faultcounter} faults total')
+else: 
+    faultToTest = input("Please enter the fault you wish to test (EX. a-a-SA0 or a-b-SA0): ")
+    testFault.append(faultToTest[0])
+    testFault.append(faultToTest[2])
+    testFault.append(faultToTest[4:7])
 
 ######################
 #2) Circuit Simulation
@@ -277,11 +290,11 @@ def getfault(elem,cfault):
     #stupid fault stuff
     # base case: output fault
     # is fault at this gate
-    if elem.name[0] == cfault.id:
+    if elem.name == cfault.id:
         #is fault at outputf
-        if cfault.id == cfault.name[0]:
+        if cfault.id == cfault.name:
             # return fault type
-            if faultType == 'SA0':
+            if cfault.type == 'SA0':
                 return '0'
             else:
                 return '1'
@@ -311,9 +324,9 @@ def getfault(elem,cfault):
         # is fault at this gate
         if elem.name == cfault.id:
             # is fault at this input
-            print(f'{elemInput} == {cfault.name[0]}')
+            # print(f'{elemInput} == {cfault.name}')
             if elemInput == cfault.name[0]:
-                print(f'ping! {cfault.id}-{cfault.name}-{cfault.type}')
+                # print(f'ping! {cfault.id}-{cfault.name}-{cfault.type}')
                 # what is fault type
                 if cfault.type == 'SA0':
                     thisval = '0'
@@ -358,15 +371,30 @@ for cfault in faultlist:
         circuit[cInputs[i]].fault = tvector[i]
 
     for coutput in cOutputs:
-        print(f'{getfault(circuit[coutput],cfault)[0]}, expected {circuit[coutput].value}')
-        if getfault(circuit[coutput],cfault)[0] != circuit[coutput].value:
+        fault_val = getfault(circuit[coutput], cfault)
+        # print(f'{fault_val}, expected {circuit[coutput].value}')
+        if fault_val != circuit[coutput].value:
             cfault.detected = True
-
     clearfaults()
 
-for cfault in faultlist:
-    if cfault.detected == True:
-        print(f'{cfault.id}-{cfault.name[0]}-{cfault.type} = {cfault.detected}')
-    
-
-    
+found = False
+if fullOrNot == 'Y':
+    print(f'\n\nDetected Faults From Given Test Vector: {tvector}\n')
+    print(f'||Input/Output Faults||Gate Faults||')
+    print(f'||===================||===========||')
+    for cfault in faultlist:
+        if cfault.detected == True:
+            printTemp = cfault.id + '-' + cfault.name + '-' + cfault.type
+            if cfault.id == cfault.name:
+                print(f'||{printTemp:^19}||{'':^11}||')
+            else:
+                print(f'||{'':^19}||{printTemp:^11}||')
+else:
+    for cfault in faultlist:
+        if cfault.detected == True:
+            if testFault[0] == cfault.id and testFault[1] == cfault.name and testFault[2] == cfault.type:
+                found = True
+    if found:
+        print(f'\nTest Vector {tvector} has detected Fault {testFault[0]}-{testFault[1]}-{testFault[2]}')
+    else:
+        print(f'\nTest Vector {tvector} has NOT detected Fault {testFault[0]}-{testFault[1]}-{testFault[2]}')
