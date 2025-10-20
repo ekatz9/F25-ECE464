@@ -162,9 +162,7 @@ if fullOrNot == 'Y':
     print(f'{faultcounter} faults total')
 else: 
     faultToTest = input("Please enter the fault you wish to test (EX. a-a-SA0 or a-b-SA0): ")
-    testFault.append(faultToTest[0])
-    testFault.append(faultToTest[2])
-    testFault.append(faultToTest[4:7])
+    testFault = faultToTest.split('-')
 
 ######################
 #2) Circuit Simulation
